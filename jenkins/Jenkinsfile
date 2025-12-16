@@ -1,0 +1,7 @@
+pipeline {
+  agent any
+  stages {
+    stage('Checkout') { steps { checkout scm } }
+    stage('Smoke') { steps { sh 'echo Jenkins OK && whoami && uname -a' } }
+  }
+}
