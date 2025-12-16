@@ -1,0 +1,12 @@
+# Linux
+*.swp
+*.swo
+*~
+
+# Evidence
+docs/evidence/command_outputs/*.txt
+
+# Secrets (DO NOT COMMIT)
+*.pem
+*.key
+.env
