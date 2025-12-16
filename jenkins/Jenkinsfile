@@ -1,7 +1,67 @@
 pipeline {
-  agent any
-  stages {
-    stage('Checkout') { steps { checkout scm } }
-    stage('Smoke') { steps { sh 'echo Jenkins OK && whoami && uname -a' } }
-  }
+    agent any
+
+    environment {
+        WEB_HOST      = '10.76.221.92'
+        WEB_PORT      = '8080'
+        GHCR_REGISTRY = 'ghcr.io'
+        IMAGE_NAME    = "ghcr.io/pie-12/devops-linux-final/app"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Clean the workspace and checkout the code
+                cleanWs()
+                checkout scm
+            }
+        }
+
+        stage('Login to GHCR') {
+            steps {
+                // Use the credential stored in Jenkins
+                withCredentials([usernamePassword(credentialsId: 'ghcr-creds', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+                    sh "echo \$GH_TOKEN | docker login \$GHCR_REGISTRY -u \$GH_USER --password-stdin"
+                }
+            }
+        }
+
+        stage('Build and Push Image') {
+            steps {
+                // The script will build, tag, and push the Docker image
+                sh 'jenkins/build_image.sh'
+            }
+        }
+        
+        stage('Deploy to VM2') {
+            steps {
+                // The script will SSH to the deployment server and restart the container
+                // It sources the image tag from the file created in the previous stage
+                archiveArtifacts artifacts: 'jenkins/image.env', allowEmptyArchive: true
+                sh 'jenkins/deploy_to_vm2.sh'
+            }
+        }
+
+        stage('Smoke Test') {
+            steps {
+                // Wait for the service to be up
+                sh 'sleep 10' 
+                // Check if the service returns HTTP 200 OK
+                sh "curl -s -o /dev/null -w '%{http_code}' http://${WEB_HOST}:${WEB_PORT}/ | grep -q 200"
+            }
+        }
+    }
+
+    post {
+        always {
+            stage('Logout from GHCR') {
+                steps {
+                    // Ensure we always log out from the registry
+                    sh "docker logout \$GHCR_REGISTRY"
+                    // Clean up the image env file
+                    sh "rm -f jenkins/image.env"
+                }
+            }
+        }
+    }
 }
