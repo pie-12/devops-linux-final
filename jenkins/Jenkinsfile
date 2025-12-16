@@ -54,14 +54,11 @@ pipeline {
 
     post {
         always {
-            stage('Logout from GHCR') {
-                steps {
-                    // Ensure we always log out from the registry
-                    sh "docker logout \$GHCR_REGISTRY"
-                    // Clean up the image env file
-                    sh "rm -f jenkins/image.env"
-                }
-            }
+            // In declarative pipelines, 'stage' is not allowed in 'post'
+            // Commands are run directly. '|| true' ensures the step doesn't fail
+            // if logout or cleanup fails (e.g., already logged out).
+            sh "docker logout ghcr.io || true"
+            sh "rm -f jenkins/image.env || true"
         }
     }
 }
