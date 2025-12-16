@@ -23,4 +23,4 @@ This repo is the **final project workspace** for our Linux/DevOps group.
 5. Collect evidence + write report/slide
 
 ## Evidence (screenshots + command logs)
-See `docs/00-evidence-checklist.md` and `scripts/capture_evidence.sh`.
+See at `docs/00-evidence-checklist.md` and `scripts/capture_evidence.sh`.
