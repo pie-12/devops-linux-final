@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
     const serverName = os.hostname();
     res.send(`
         <h1>Xin chào thầy và các bạn!</h1>
-        <p>Viet dep trai</p>
+        <p>Viet dep traiiiiiiiii</p>
         <p>Code đang chạy trên Server: <b>${serverName}</b></p>
         <p>Phiên bản: v1.0</p>
     `);
