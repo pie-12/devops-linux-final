@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        WEB_HOST      = '10.76.221.92'
+        WEB_HOST      = '10.16.58.92'
         WEB_PORT      = '8080'
         GHCR_REGISTRY = 'ghcr.io'
         IMAGE_NAME    = "ghcr.io/pie-12/devops-linux-final/app"

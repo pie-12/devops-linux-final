@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-WEB_HOST="10.76.221.92"
+WEB_HOST="10.16.58.92"
 WEB_USER="duck"
 CONTAINER_NAME="demo-app"
 HOST_PORT="8080"
