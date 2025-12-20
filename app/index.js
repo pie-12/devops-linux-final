@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
         <div class="info">
             <p><b>👤 Sinh viên:</b> Viet, Lam, Khai, Tu</p>
             <p><b>🖥 Server / Container:</b> <span class="badge">${serverName}</span></p>
-            <p><b>📦 Phiên bản:</b> v1.7</p>
+            <p><b>📦 Phiên bản:</b> v1.8</p>
             <p><b>⚙️ Triển khai:</b> Jenkins + Docker</p>
         </div>
 
